@@ -1,16 +1,22 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import os
+
 
 class NotepadBD:
 #Certamente vou passar um parâmetro para demonstrar a chave da conversa
-#   def __init__():
-#      captureData()
-    def __init__(self):
-        self.url = "http://dontpad.com/tiotio"
+    
+
+    def __init__(self, nameBD):
+        self.url = "http://dontpad.com/" + nameBD 
+        print("DB's name: ",self.url)
+        self.texto = "text='{'user_name': 'meulogin', 'user_password': 'minhasenha123'}'"
+        self.nameBD = nameBD
 
     def captureData(self):
         #TODO - validar pro json não dar erro
+        #ERROR - if notepad page is blank, the json.loads() will make a error.
         page = requests.get("http://dontpad.com/tiotio")
         soup = BeautifulSoup(page.content, 'html.parser')
         data = json.loads(soup.find('textarea', id='text').get_text())
@@ -20,10 +26,18 @@ class NotepadBD:
         #requests.post(self.url, text)
     
     #Tentar fazer preencher o text área com python (post não funciona)
-    def post_notepad():
+    
+    def post_notepad(self):
+        data = "text='{'user_name': 'meulogin', 'user_password': 'minhasenha123'}'"
         url = "http://dontpad.com/tiotio"
-        texto = "text='{'user_name': 'meulogin', 'user_password': 'minhasenha123'}'"
-        postando = requests.post(url, texto)
+        print(self.url)
+        comando = "curl -X POST -d "+ data +" "+str(self.url)
+        print(comando)
+        os.system(comando)
+        #ERROR - the method bellow will clean notepad page
+        #postando = requests.post(url, texto)
 
-note = NotepadBD()
-note.captureData()
+#Execution
+teste = str(input())
+note = NotepadBD(teste)
+note.post_notepad()
