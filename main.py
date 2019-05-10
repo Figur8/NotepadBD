@@ -28,14 +28,15 @@ class NotepadBD:
     #Tentar fazer preencher o text área com python (post não funciona)
     
     def post_notepad(self):
-        data = "text='{'user_name': 'meulogin', 'user_password': 'minhasenha123'}'"
+        db = {"user_name": "meulogin", "user_password": "minhasenha123"}
         url = "http://dontpad.com/tiotio"
         print(self.url)
-        comando = "curl -X POST -d "+ data +" "+str(self.url)
-        print(comando)
-        os.system(comando)
+        data = {"text":json.dumps(db)}
+        postando = requests.post(url=url, data=data)
+        #comando = "curl -X POST -d "+ data +" "+str(self.url)
+        #print(comando)
+        #os.system(comando)
         #ERROR - the method bellow will clean notepad page
-        #postando = requests.post(url, texto)
 
 #Execution
 teste = str(input())
